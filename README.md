@@ -1,1 +1,96 @@
-# kdh-Library
+# kdh 도서 관리 시스템
+
+콘솔에서 도서를 **등록·조회·수정·삭제**하고, 제목으로 **검색**하거나 분류로 **필터링**하는
+자바 프로그램입니다. 자바 17, 외부 라이브러리 없이 표준 라이브러리만 씁니다.
+
+소스 5개 파일 / 440줄.
+
+---
+
+## 1. 실행 방법
+
+### IntelliJ
+
+1. 이 폴더를 IntelliJ 로 엽니다.
+2. `src/src/main/java` 를 오른쪽 클릭 → **Mark Directory as → Sources Root**.
+3. `com.kdh.library.MainApplication` 의 `main` 왼쪽 실행 단추(▶)를 누릅니다.
+
+`src/src/main/java` 를 Sources Root 로 지정하지 않으면 IntelliJ 가 `package com.kdh.library`
+선언과 폴더 위치가 어긋난다고 보고 실행 단추를 띄우지 않습니다.
+
+### 명령줄
+
+```bash
+javac -encoding UTF-8 -d out $(find src -name "*.java")
+java  -Dfile.encoding=UTF-8 -cp out com.kdh.library.MainApplication
+```
+
+`-encoding UTF-8` 을 붙이는 이유는 윈도우 콘솔 기본 문자셋이 MS949 라서,
+안 붙이면 소스의 한글 주석에서 컴파일 오류가 나기 때문입니다.
+
+---
+
+## 2. 메뉴
+
+```
+===== kdh 도서 관리 =====
+1. 등록
+2. 전체 조회
+3. 제목 검색
+4. 분류 조회
+5. 수정
+6. 삭제
+7. 종료
+```
+
+실행하면 도서 6권이 미리 등록된 상태로 시작합니다. 켜자마자 조회와 검색을 확인할 수 있습니다.
+
+---
+
+## 3. 구조
+
+```
+src/src/main/java/com/kdh/library/
+├── MainApplication.java          시작점. 메뉴를 돌리고 아래 둘을 연결한다
+├── entity/
+│   ├── Book.java                 책 한 권의 정보를 담는다
+│   └── Category.java             분류 enum (문학·인문·사회·과학기술·예술·실용)
+├── repository/
+│   └── BookStore.java            책을 담아두고 조건에 맞게 찾아준다
+└── view/
+    └── ConsoleUI.java            화면 출력과 키보드 입력을 전담한다
+```
+
+각 클래스는 **자기 일만** 합니다. "하지 않는 일" 쪽이 더 중요합니다.
+
+| 클래스 | 하는 일 | 하지 않는 일 |
+|---|---|---|
+| `Book` | 책 한 권의 값을 담는다 | 화면 출력, 저장 |
+| `Category` | 정해진 분류 6개를 표현하고 번호를 분류로 바꿔 준다 | 그 외 전부 |
+| `BookStore` | 담아두고 찾고 지운다. 기본 장서가 무엇인지도 안다 | 화면 출력, 키보드 입력 |
+| `ConsoleUI` | 찍고 입력받는다 | 데이터를 고치는 일 |
+| `MainApplication` | 객체를 만들어 잇고 메뉴를 돌린다 | 직접 출력, 직접 목록을 뒤지는 일, 어떤 데이터로 시작할지 정하는 일 |
+
+`main` 에 초기 도서 목록을 늘어놓지 않고 `store.loadSampleBooks()` 한 줄만 부르는 이유가
+여기 있습니다. **"어떤 책으로 시작하는가" 는 데이터에 관한 결정**이라 데이터를 맡은
+`BookStore` 가 알아야 합니다. `main` 은 부르기만 합니다.
+
+`BookStore` 생성자에 넣지 않은 이유도 있습니다. 부르지 않으면 빈 저장소로 시작할 수
+있어야, 나중에 "책이 하나도 없을 때" 를 확인해 보기 쉽습니다. 그리고 `main` 을 읽었을 때
+**샘플 데이터를 넣는다는 사실이 한 줄로 보입니다.** 생성자에 숨기면 나중에
+"왜 책이 6권 있지?" 를 찾아 헤매게 됩니다.
+
+`Scanner` 는 `ConsoleUI` 만 갖습니다. 클래스마다 `new Scanner(System.in)` 을 만들면
+입력이 서로 엉키기 때문입니다.
+
+"도서 등록"을 골랐을 때 어떻게 협력하는지 보면 이렇습니다.
+
+```
+사용자 ──"1"──▶ MainApplication
+                     │
+                     ├─▶ ConsoleUI.inputRequiredText      ─── 제목을 받는다
+                     ├─▶ ConsoleUI.selectCategory(...)      ─── 분류를 받는다
+                     │      └ 숫자가 아니거나 범위 밖이면 여기서 다시 물어본다
+                     ├─▶ BookStore.add(제목, 분류)          ─── 번호를 매겨 목록에 넣는다
+                     └─▶ ConsoleUI.showMessage("등록되었습니다.")
+```
