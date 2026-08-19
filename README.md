@@ -66,7 +66,7 @@ src/src/main/java/com/kdh/library/
 | 클래스 | 하는 일 | 
 |---|---|
 | `Book` | 책 한 권의 값을 담는다 |
-| `Category` | 서적을 정해진 분류 6개를 표현하고 번호를 분류로 바꿔 준다 | 
+| `Category` | 서적 분류 6개를 표현하고, 번호를 분류로 바꿔 준다 | 
 | `BookStore` | 서적을 담아두고 찾고 지운다 | 
 | `ConsoleUI` | 입력과 출력 |
 | `MainApplication` | 메인 어플리케이션 | 
