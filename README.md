@@ -66,10 +66,10 @@ src/src/main/java/com/kdh/library/
 | 클래스 | 하는 일 | 
 |---|---|
 | `Book` | 책 한 권의 값을 담는다 |
-| `Category` | 정해진 분류 6개를 표현하고 번호를 분류로 바꿔 준다 | 
-| `BookStore` | 담아두고 찾고 지운다. 기본 장서가 무엇인지도 안다 | 
-| `ConsoleUI` | 찍고 입력받는다 |
-| `MainApplication` | 객체를 만들어 잇고 메뉴를 돌린다 | 
+| `Category` | 서적을 정해진 분류 6개를 표현하고 번호를 분류로 바꿔 준다 | 
+| `BookStore` | 서적을 담아두고 찾고 지운다 | 
+| `ConsoleUI` | 입력과 출력 |
+| `MainApplication` | 메인 어플리케이션 | 
 
 예를 들어 "도서 등록"을 골랐을 때 어떻게 작동하는지 보면 이렇습니다.
 
