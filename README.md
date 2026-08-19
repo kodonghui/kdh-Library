@@ -48,14 +48,14 @@ java  -Dfile.encoding=UTF-8 -cp out com.kdh.library.MainApplication
 
 ```
 src/src/main/java/com/kdh/library/
-├── MainApplication.java          시작점. 메뉴를 돌리고 아래 둘을 연결한다
+├── MainApplication.java          메인 어플리케이션
 ├── entity/
-│   ├── Book.java                 책 한 권의 정보를 담는다
-│   └── Category.java             분류 enum (문학·인문·사회·과학기술·예술·실용)
+│   ├── Book.java                 서적 정보
+│   └── Category.java             서적 분류 (문학·인문·사회·과학기술·예술·실용)
 ├── repository/
-│   └── BookStore.java            책을 담아두고 조건에 맞게 찾아준다
+│   └── BookStore.java            서적 조회
 └── view/
-    └── ConsoleUI.java            화면 출력과 키보드 입력을 전담한다
+    └── ConsoleUI.java            입력/출력
 ```
 
 각 기능별로 클래스를 나누었습니다.
