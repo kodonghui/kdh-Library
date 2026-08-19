@@ -25,6 +25,9 @@ javac -encoding UTF-8 -d out $(find src -name "*.java")
 java  -Dfile.encoding=UTF-8 -cp out com.kdh.library.MainApplication
 ```
 
+윈도우에서는 두 옵션이 다 필요합니다. `-encoding` 을 빼면 컴파일이 안 되고,
+`-Dfile.encoding` 을 빼면 화면 한글이 깨집니다.
+
 ---
 
 ## 2. 메뉴
@@ -53,7 +56,7 @@ src/src/main/java/com/kdh/library/
 │   ├── Book.java                 서적 정보
 │   └── Category.java             서적 분류 (문학·인문·사회·과학기술·예술·실용)
 ├── repository/
-│   └── BookStore.java            서적 조회
+│   └── BookStore.java            서적 저장 / 조회 / 삭제 
 └── view/
     └── ConsoleUI.java            입력/출력
 ```
